@@ -13,26 +13,23 @@ $(document).ready(function () {
         var firstTrainMinutes = parseInt(firstTrainHoursMinutesArr[1]);
         var firstTrainHoursToMinutes = firstTrainHours * 60
         var firstTrainMinutesTotal = (firstTrainHoursToMinutes) + firstTrainMinutes
-        console.log(firstTrainMinutesTotal);
         // Convert present time to minutes
         var timeNow = new Date();
         var getHours = timeNow.getHours();
         var getMinutes = timeNow.getMinutes();
         var timeNowinMinutes = (getHours * 60) + getMinutes
-
-        // While loop to verify if "on time" for next train
+        // Get next train time by verifying that next train is in the future nd not in the past
         while (timeNowinMinutes > firstTrainMinutesTotal) {
             firstTrainMinutesTotal = parseInt(firstTrainMinutesTotal) + parseInt(frequency)
         }
-
-        
-
-
-
-
-
-
-        var markup = "<tr><td>" + train + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + firstTrainMinutesTotal + "</td></tr>";
+        var nextTrainArrivalHour = parseInt(firstTrainMinutesTotal / 60)
+        var minutesAway = firstTrainMinutesTotal - timeNowinMinutes
+        nextTrainArrivalMinutes = Math.abs(getMinutes + minutesAway - 60);
+        if (nextTrainArrivalMinutes < 10) {
+            nextTrainArrivalMinutes = "0" + nextTrainArrivalMinutes
+        }
+        // Add data to table inside html page
+        var markup = "<tr><td>" + train + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + nextTrainArrivalHour + ":" + nextTrainArrivalMinutes + "</td><td>" + minutesAway + "</td></tr>";
 
         $("table tbody").append(markup);
 
