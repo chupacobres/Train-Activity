@@ -36,18 +36,36 @@ $(document).ready(function () {
         var nextTrainArrivalHour = parseInt(firstTrainMinutesTotal / 60)
         var minutesAway = firstTrainMinutesTotal - timeNowinMinutes
         nextTrainArrivalMinutes = (getMinutes + minutesAway);
-        if (nextTrainArrivalMinutes >= 60) {
+        if (nextTrainArrivalMinutes >= 60 && nextTrainArrivalMinutes <120) {
             nextTrainArrivalMinutes = nextTrainArrivalMinutes - 60
         }
-
+        if (nextTrainArrivalMinutes >= 120 && nextTrainArrivalMinutes <180) {
+            nextTrainArrivalMinutes = nextTrainArrivalMinutes - 120
+        }
+        if (nextTrainArrivalMinutes >= 180 && nextTrainArrivalMinutes <240) {
+            nextTrainArrivalMinutes = nextTrainArrivalMinutes - 180
+        }
+        if (nextTrainArrivalMinutes >= 240 && nextTrainArrivalMinutes <300) {
+            nextTrainArrivalMinutes = nextTrainArrivalMinutes - 240
+        }
+        if (nextTrainArrivalMinutes >= 300 && nextTrainArrivalMinutes <360) {
+            nextTrainArrivalMinutes = nextTrainArrivalMinutes - 300
+        }
+        if (nextTrainArrivalMinutes >= 360 && nextTrainArrivalMinutes <420) {
+            nextTrainArrivalMinutes = nextTrainArrivalMinutes - 360
+        }  
         if (nextTrainArrivalMinutes < 10) {
             nextTrainArrivalMinutes = "0" + nextTrainArrivalMinutes
         }
+        var nextTrainArrivalFinal = nextTrainArrivalHour + ":" + nextTrainArrivalMinutes
+        
         database.ref().set({
             train: train,
             destination: destination,
             frequency: frequency,
-            firstTrain: firstTrain
+            firstTrain: firstTrain,
+            nextTrainArrivalFinal: nextTrainArrivalFinal,
+            minutesAway: minutesAway
 
         });
         // Add data to table inside html page
@@ -57,13 +75,15 @@ $(document).ready(function () {
             console.log(snapshot.val().destination);
             console.log(snapshot.val().firstTrain);
             console.log(snapshot.val().frequency);
+            console.log(snapshot.val().nextTrainArrivalFinal);
+            console.log(snapshot.val().minutesAway);
 
-            var markup = "<tr><td>" + snapshot.val().train + "</td><td>" + snapshot.val().destination + "</td><td>" + snapshot.val().frequency + "</td><td>" + nextTrainArrivalHour + ":" + nextTrainArrivalMinutes + "</td><td>" + minutesAway + "</td></tr>";
+            var markup = "<tr><td>" + snapshot.val().train + "</td><td>" + snapshot.val().destination + "</td><td>" + snapshot.val().frequency + "</td><td>" + nextTrainArrivalFinal + "</td><td>" + minutesAway + "</td></tr>";
 
             $("table tbody").append(markup);
-        }, function(errorObject) {
+        }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
-          });
+        });
 
     });
 
